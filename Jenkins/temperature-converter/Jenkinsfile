@@ -4,30 +4,36 @@ pipeline {
     stages {
         stage('Instalar dependências') {
             steps {
-                bat '"C:\\Users\\Lucas\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m pip install -r requirements.txt'
+                dir('Jenkins/temperature-converter') {
+                    bat '"C:\\Users\\Lucas\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m pip install -r requirements.txt'
+                }
             }
         }
 
         stage('Build') {
             steps {
-                bat '"C:\\Users\\Lucas\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m compileall -q src'
+                dir('Jenkins/temperature-converter') {
+                    bat '"C:\\Users\\Lucas\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m compileall -q src'
+                }
             }
         }
 
         stage('Testes') {
             steps {
-                bat 'if not exist reports mkdir reports'
+                dir('Jenkins/temperature-converter') {
+                    bat 'if not exist reports mkdir reports'
 
-                script {
-                    def resultado = bat(
-                        returnStatus: true,
-                        script: '"C:\\Users\\Lucas\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m pytest --junitxml=reports\\test-results.xml'
-                    )
+                    script {
+                        def resultado = bat(
+                            returnStatus: true,
+                            script: '"C:\\Users\\Lucas\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m pytest --junitxml=reports\\test-results.xml'
+                        )
 
-                    junit testResults: 'reports/test-results.xml'
+                        junit testResults: 'Jenkins/temperature-converter/reports/test-results.xml'
 
-                    if (resultado != 0) {
-                        echo 'Alguns testes falharam.'
+                        if (resultado != 0) {
+                            echo 'Alguns testes falharam.'
+                        }
                     }
                 }
             }
