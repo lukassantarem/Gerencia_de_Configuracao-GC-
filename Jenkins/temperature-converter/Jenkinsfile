@@ -29,7 +29,7 @@ pipeline {
                             script: '"C:\\Users\\Lucas\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m pytest --junitxml=reports\\test-results.xml'
                         )
 
-                        junit testResults: 'Jenkins/temperature-converter/reports/test-results.xml'
+                        junit testResults: 'reports/test-results.xml'
 
                         if (resultado != 0) {
                             echo 'Alguns testes falharam.'
