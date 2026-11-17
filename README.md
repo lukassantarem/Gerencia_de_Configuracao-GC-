@@ -1,1 +1,1 @@
-# Gerencia_de_Configuracao-GC-
+# Gerencia_de_Configuracao(GC)
